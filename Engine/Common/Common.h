@@ -1,6 +1,6 @@
 #pragma once
-#pragma warning(disable: 4251)	// ¹ÌºÀÃ¥(¹æ¹ı ¾øÀ½).
-#pragma warning(disable: 4172)	// À§Çè¼º ÀÎÁöÇÑ »óÅÂ·Î »ç¿ë.
+#pragma warning(disable: 4251)	// ë¯¸ë´‰ì±…(ë°©ë²• ì—†ìŒ).
+#pragma warning(disable: 4172)	// ìœ„í—˜ì„± ì¸ì§€í•œ ìƒíƒœë¡œ ì‚¬ìš©.
 #pragma warning(disable: 4244)
 #pragma warning(disable: 4267)
 
@@ -9,7 +9,7 @@
 #define DLLEXPORT   __declspec(dllexport)
 #define DLLIMPORT   __declspec(dllimport)
 
-// ENGINE_BUILD_DLLÀÌ ¼±¾ğµÇ¾î ÀÖ´ÂÁö¿¡ µû¶ó ºĞ±â.
+// ENGINE_BUILD_DLLì´ ì„ ì–¸ë˜ì–´ ìˆëŠ”ì§€ì— ë”°ë¼ ë¶„ê¸°.
 #if ENGINE_BUILD_DLL
 #define WANTED_API DLLEXPORT
 #else

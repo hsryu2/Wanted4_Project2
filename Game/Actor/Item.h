@@ -9,7 +9,7 @@ class Item : public Actor
 	RTTI_DECLARATIONS(Item, Actor)
 
 public:
-	// int t -> ¾ÆÀÌÅÛ ±â´É ºĞ·ù¿ë
+	// int t -> ì•„ì´í…œ ê¸°ëŠ¥ ë¶„ë¥˜ìš©
 	Item(Vector2& position, int xPosition, int yPosition, int itemType);
 	~Item();
 	

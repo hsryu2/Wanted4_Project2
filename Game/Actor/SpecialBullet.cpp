@@ -32,7 +32,7 @@ void SpecialBullet::Tick(float deltaTime)
 
 	SpecialShot(deltaTime);
 
-	// ÅºÈ¯ÀÌ ÄÜ¼Ö »çÀÌÁî ³¡¿¡ µµ´Þ ½Ã ÆÄ±«
+	// íƒ„í™˜ì´ ì½˜ì†” ì‚¬ì´ì¦ˆ ëì— ë„ë‹¬ ì‹œ íŒŒê´´
 	if (position.x > Engine::Get().GetWidth())
 	{
 		Destroy();

@@ -24,27 +24,27 @@ public:
 private:
 	virtual void Tick(float deltaTime) override;
 
-	// ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿ÇÏ´Â ÇÔ¼ö.
+	// ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™í•˜ëŠ” í•¨ìˆ˜.
 	void MoveRight(float deltaTime);
 	
-	// ¿ŞÂÊÀ¸·Î ÀÌµ¿ÇÏ´Â ÇÔ¼ö.
+	// ì™¼ìª½ìœ¼ë¡œ ì´ë™í•˜ëŠ” í•¨ìˆ˜.
 	void MoveLeft(float deltaTime);
 
-	// À§·Î ÀÌµ¿ÇÏ´Â ÇÔ¼ö.
+	// ìœ„ë¡œ ì´ë™í•˜ëŠ” í•¨ìˆ˜.
 	void MoveUp(float deltaTime);
 
-	// ¾Æ·¡·Î ÀÌµ¿ÇÏ´Â ÇÔ¼ö.
+	// ì•„ë˜ë¡œ ì´ë™í•˜ëŠ” í•¨ìˆ˜.
 	void MoveDown(float deltaTime);
 
 
-	// ¾ÆÀÌÅÛ »ç¿ë
+	// ì•„ì´í…œ ì‚¬ìš©
 	void useItem_Clear(float deltaTime);
 
 
 	
 private:
 
-	// Å¸ÀÌ¸Ó º¯¼ö.
+	// íƒ€ì´ë¨¸ ë³€ìˆ˜.
 	Timer timer;
 
 	float moveSpeed = 40.0f;

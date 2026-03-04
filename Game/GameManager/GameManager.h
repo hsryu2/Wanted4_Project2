@@ -47,17 +47,17 @@ private:
 
 	State state = State::GamePlay;
 
-	// °ÔÀÓÇÏ´Â »óÅÂÀÎÁö È®ÀÎ
+	// ê²Œì„í•˜ëŠ” ìƒíƒœì¸ì§€ í™•ì¸
 	bool isPlayGame = false;
 
-	// Á¡¼ö º¯¼ö.
+	// ì ìˆ˜ ë³€ìˆ˜.
 	int score = 0;
 	float scoreAccumulator = 0.0f;
 
-	// Á¡¼ö ¹®ÀÚ¿­.
+	// ì ìˆ˜ ë¬¸ìì—´.
 	char scoreString[128] = {};
 
-	// ¾ÆÀÌÅÛ ¹®ÀÚ¿­.
+	// ì•„ì´í…œ ë¬¸ìì—´.
 	char itemString[32] = {};
 
 	size_t stringSize = strlen(scoreString);
