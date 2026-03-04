@@ -47,7 +47,7 @@ namespace Wanted
 		Bounds bounds;
 		int depth = 0;
 
-		NodeIndex testRigion(const Bounds& bounds);
+		NodeIndex testRegion(const Bounds& bounds);
 
 		std::vector<NodeIndex> GetQuads(const Bounds& bounds);
 

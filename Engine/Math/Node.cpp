@@ -9,7 +9,7 @@ namespace Wanted
 
 	Node::~Node()
 	{
-		
+		Clear();
 	}
 
 	void Node::Insert(Node* node)
@@ -19,7 +19,7 @@ namespace Wanted
 			return;
 		}
 		// 겹치는 영역 확인.
-		NodeIndex result = testRigion(node->GetBounds());
+		NodeIndex result = testRegion(node->GetBounds());
 
 		if (result == NodeIndex::Stradding)
 		{
@@ -40,11 +40,49 @@ namespace Wanted
 
 	void Node::Query(const Bounds& bounds, std::vector<Node*>& possibleNodes)
 	{
+		possibleNodes.emplace_back(this);
+
+		if (!IsDivided())
+		{
+			return;
+		}
+
+		std::vector<NodeIndex> quads = GetQuads(bounds);
+
+		for (const NodeIndex& index : quads)
+		{
+			if (index == NodeIndex::TopLeft)
+			{
+				topLeft->Query(bounds, possibleNodes);
+			}
+			else if (index == NodeIndex::TopRight)
+			{
+				topRight->Query(bounds, possibleNodes);
+			}
+			else if (index == NodeIndex::BottomLeft)
+			{
+				bottomLeft->Query(bounds, possibleNodes);
+			}
+			else if (index == NodeIndex::BottomRight)
+			{
+				bottomRight->Query(bounds, possibleNodes);
+			}
+		}
 	}
 
 	void Node::Clear()
 	{
 		points.clear();
+
+		if (IsDivided)
+		{
+			topLeft->Clear();
+			topRight->Clear();
+			bottomLeft->Clear();
+			bottomRight->Clear();
+
+			ClearChildren();
+		}
 	}
 
 	bool Node::SubDivide()
@@ -76,7 +114,7 @@ namespace Wanted
 		return topLeft != nullptr;
 	}
 
-	NodeIndex Node::testRigion(const Bounds& bounds)
+	NodeIndex Node::testRegion(const Bounds& bounds)
 	{
 		std::vector<NodeIndex> quads = GetQuads(bounds);
 
@@ -103,15 +141,48 @@ namespace Wanted
 		int centerX = x + halfWidth;
 		int centerY = y + halfHeight;
 
-		bool left = bounds.X() < centerX && 
-		
+		// 왼쪽이랑 겹치는지 확인.
+		bool left = bounds.X() < centerX && bounds.MaxX() >= x;
+
+		// 오른쪽이랑 겹치는지 확인.
+		bool right = bounds.MaxX() >= centerX && bounds.X() < this->bounds.MaxX();
+
+		// 위쪽이랑 겹치는지 확인.
+		bool top = bounds.Y() < centerY && bounds.MaxY() >= y;
+
+		// 아래쪽이랑 겹치는지 확인.
+		bool bottom = bounds.MaxY() >= centerY && bounds.Y() < this->bounds.MaxY();
+
+		if (top && left)
+		{
+			quads.emplace_back(NodeIndex::TopLeft);
+		}
+		if (top && right)
+		{
+			quads.emplace_back(NodeIndex::TopRight);
+		}
+		if (bottom && left)
+		{
+			quads.emplace_back(NodeIndex::BottomLeft);
+		}
+		if (bottom && right)
+		{
+			quads.emplace_back(NodeIndex::BottomRight);
+		}
 
 
-		return std::vector<NodeIndex>();
+		return quads;
 	}
 
 	void Node::ClearChildren()
 	{
+		if (IsDivided)
+		{
+			SafeDelete(topLeft);
+			SafeDelete(topRight);
+			SafeDelete(bottomLeft);
+			SafeDelete(bottomRight);
+		}
 	}
 }
 
