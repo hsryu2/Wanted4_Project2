@@ -14,7 +14,7 @@ namespace Wanted
 			return false;
 		}
 
-		if (other.y > MaxX())
+		if (other.y > MaxY())
 		{
 			return false;
 		}

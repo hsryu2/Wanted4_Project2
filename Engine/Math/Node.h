@@ -25,14 +25,14 @@ namespace Wanted
 		Node(const Bounds& bounds, int depth = 0);
 		~Node();
 
-		void Insert(Node* node);
+		void Insert(Actor* actor);
 
-		void Query(const Bounds& bounds, std::vector<Node*>& possibleNodes);
+		void Query(const Bounds& bounds, std::vector<Actor*>& possibleActors);
 
 		void Clear();
 
 		inline const Bounds& GetBounds() { return bounds; }
-		inline const std::vector<Node*>& Points() { return points; }
+		inline const std::vector<Actor*>& Points() { return points; }
 
 		inline Node* TopLeft() const { return topLeft; }
 		inline Node* TopRight() const { return topRight; }
@@ -53,7 +53,7 @@ namespace Wanted
 
 		void ClearChildren();
 
-		std::vector<Node*> points;
+		std::vector<Actor*> points;
 
 		Node* topLeft = nullptr;
 		Node* topRight = nullptr;

@@ -9,9 +9,9 @@ namespace Wanted
 		QuadTree(const Bounds& bounds);
 		~QuadTree();
 
-		void Insert(Node* node);
+		void Insert(Actor* actor);
 
-		std::vector<Node*> Query(Node* QueryNode);
+		std::vector<Actor*> Query(Actor* targetActor);
 
 
 	public:

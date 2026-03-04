@@ -3,6 +3,7 @@
 #include "Common/RTTI.h"
 #include "Math/Vector2.h"
 #include "Math/Color.h"
+#include "Math/Bounds.h"
 
 namespace Wanted
 {
@@ -51,6 +52,9 @@ namespace Wanted
 		inline Level* GetOwner() const { return owner; }
 
 		void Setimage(const char* image);
+
+		inline Bounds GetBounds() { return Bounds(position.x, position.y, width, 1); }
+	
 
 		// Getter.
 		inline bool HasBeganPlay() const

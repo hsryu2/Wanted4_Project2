@@ -12,7 +12,7 @@ namespace Wanted
 		SafeDelete(root);
 	}
 
-	void QuadTree::Insert(Node* node)
+	void QuadTree::Insert(Actor* node)
 	{
 		if (!node)
 		{
@@ -22,26 +22,24 @@ namespace Wanted
 		root->Insert(node);
 	}
 
-	std::vector<Node*> QuadTree::Query(Node* QueryNode)
+	std::vector<Actor*> QuadTree::Query(Actor* targetActor)
 	{
-		if (!QueryNode)
+		if (!targetActor)
 		{
 			return { };
 		}
 
-		std::vector<Node*> possibleNodes;
-		root->Query(QueryNode->GetBounds(), possibleNodes);
+		std::vector<Actor*> possibleActors;
+		root->Query(targetActor->GetBounds(), possibleActors);
 
-		std::vector<Node*> intersects;
-		for (Node* const node : possibleNodes)
+		std::vector<Actor*> intersects;
+		for (Actor* actor : possibleActors)
 		{
-			for (Node* const point : node->Points())
+			if (actor == targetActor) continue;
+
+			if (actor->GetBounds().Intersects(targetActor->GetBounds()))
 			{
-				if (point->GetBounds().Intersects(QueryNode->GetBounds()))
-				{
-					intersects.emplace_back(point);
-					continue;
-				}
+				intersects.emplace_back(actor);
 			}
 		}
 		return intersects;

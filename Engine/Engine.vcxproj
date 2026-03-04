@@ -104,6 +104,8 @@ xcopy $(OutDir)\Engine.lib ..\Library\Engine\$(Platform)\$(Configuration)\ /e /y
     <ClCompile Include="Core\Input.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Level\Level.cpp" />
+    <ClCompile Include="Math\Bounds.cpp" />
+    <ClCompile Include="Math\Node.cpp" />
     <ClCompile Include="Math\QuadTree.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Render\Renderer.cpp" />
@@ -114,6 +116,7 @@ xcopy $(OutDir)\Engine.lib ..\Library\Engine\$(Platform)\$(Configuration)\ /e /y
     <ClInclude Include="Common\Common.h" />
     <ClInclude Include="Common\RTTI.h" />
     <ClInclude Include="Core\Input.h" />
+    <ClInclude Include="Math\Bounds.h" />
     <ClInclude Include="Math\Node.h" />
     <ClInclude Include="Math\QuadTree.h" />
     <ClInclude Include="Render\Renderer.h" />

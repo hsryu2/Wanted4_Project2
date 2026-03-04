@@ -12,18 +12,18 @@ namespace Wanted
 		Clear();
 	}
 
-	void Node::Insert(Node* node)
+	void Node::Insert(Actor* actor)
 	{
-		if (!node)
+		if (!actor)
 		{
 			return;
 		}
 		// 겹치는 영역 확인.
-		NodeIndex result = testRegion(node->GetBounds());
+		NodeIndex result = testRegion(actor->GetBounds());
 
 		if (result == NodeIndex::Stradding)
 		{
-			points.emplace_back(node);
+			points.emplace_back(actor);
 		}
 
 		else if (result != NodeIndex::OutOfArea)
@@ -32,15 +32,30 @@ namespace Wanted
 			{
 				if (result == NodeIndex::TopLeft)
 				{
-					topLeft->Insert(node);
+					topLeft->Insert(actor);
+				}
+				if (result == NodeIndex::TopRight)
+				{
+					topRight->Insert(actor);
+				}
+				if (result == NodeIndex::BottomLeft)
+				{
+					bottomLeft->Insert(actor);
+				}
+				if (result == NodeIndex::BottomRight)
+				{
+					bottomRight->Insert(actor);
 				}
 			}
 		}
 	}
 
-	void Node::Query(const Bounds& bounds, std::vector<Node*>& possibleNodes)
+	void Node::Query(const Bounds& bounds, std::vector<Actor*>& possibleActors)
 	{
-		possibleNodes.emplace_back(this);
+		for (Actor* actor : points)
+		{
+			possibleActors.emplace_back(actor);
+		}
 
 		if (!IsDivided())
 		{
@@ -53,19 +68,19 @@ namespace Wanted
 		{
 			if (index == NodeIndex::TopLeft)
 			{
-				topLeft->Query(bounds, possibleNodes);
+				topLeft->Query(bounds, possibleActors);
 			}
 			else if (index == NodeIndex::TopRight)
 			{
-				topRight->Query(bounds, possibleNodes);
+				topRight->Query(bounds, possibleActors);
 			}
 			else if (index == NodeIndex::BottomLeft)
 			{
-				bottomLeft->Query(bounds, possibleNodes);
+				bottomLeft->Query(bounds, possibleActors);
 			}
 			else if (index == NodeIndex::BottomRight)
 			{
-				bottomRight->Query(bounds, possibleNodes);
+				bottomRight->Query(bounds, possibleActors);
 			}
 		}
 	}
@@ -74,7 +89,7 @@ namespace Wanted
 	{
 		points.clear();
 
-		if (IsDivided)
+		if (IsDivided())
 		{
 			topLeft->Clear();
 			topRight->Clear();
@@ -93,12 +108,12 @@ namespace Wanted
 			return false;
 		}
 
-		if (!IsDivided)
+		if (!IsDivided())
 		{
 			int x = bounds.X();
 			int y = bounds.Y();
 			int halfWidth = bounds.Width() / 2;
-			int halfHeight = bounds.Width() / 2;
+			int halfHeight = bounds.Height() / 2;
 
 			topLeft = new Node(Bounds(x, y, halfWidth, halfHeight), depth + 1);
 			topRight = new Node(Bounds(x + halfWidth, y, halfWidth, halfHeight), depth + 1);
@@ -176,7 +191,7 @@ namespace Wanted
 
 	void Node::ClearChildren()
 	{
-		if (IsDivided)
+		if (IsDivided())
 		{
 			SafeDelete(topLeft);
 			SafeDelete(topRight);
