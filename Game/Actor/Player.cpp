@@ -23,7 +23,8 @@ Player::Player()
 	yf = static_cast<float>(yPosition);
 
 	SetPosition(Vector2(xPosition, yPosition));
-	
+	width = 1;
+	height = 1;
 }
 
 Player::~Player()

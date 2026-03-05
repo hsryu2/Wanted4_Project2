@@ -34,18 +34,22 @@ namespace Wanted
 			if (result == NodeIndex::TopLeft)
 			{
 				topLeft->Insert(actor);
+				return;
 			}
 			if (result == NodeIndex::TopRight)
 			{
 				topRight->Insert(actor);
+				return;
 			}
 			if (result == NodeIndex::BottomLeft)
 			{
 				bottomLeft->Insert(actor);
+				return;
 			}
 			if (result == NodeIndex::BottomRight)
 			{
 				bottomRight->Insert(actor);
+				return;
 			}
 		}
 		// 영역 밖이 아닌 객체를 일단 배열에 넣는다.
@@ -54,7 +58,7 @@ namespace Wanted
 		// 배열의 사이즈가 분할 조건에 맞는지 확인.
 
 
-		if (points.size() > capacity && !IsDivided() && depth < 5)
+		if (points.size() > capacity && !IsDivided() && depth < 2)
 		{	
 			if (SubDivide())
 			{
@@ -72,15 +76,15 @@ namespace Wanted
 					}
 					else if (pResult == NodeIndex::TopRight)
 					{
-						topRight->Insert(actor);
+						topRight->Insert(p);
 					}
 					else if (pResult == NodeIndex::BottomLeft)
 					{
-						bottomLeft->Insert(actor);
+						bottomLeft->Insert(p);
 					}
 					else if (pResult == NodeIndex::BottomRight)
 					{
-						bottomRight->Insert(actor);
+						bottomRight->Insert(p);
 					}
 					else
 					{
@@ -145,10 +149,48 @@ namespace Wanted
 		}
 	}
 
+	void Node::GetPlayerBound(const Bounds& targetBounds, std::vector<Bounds>& outBounds)
+	{
+		if (IsDivided())
+		{
+			if (bounds.Intersects(targetBounds))
+			{
+				outBounds.emplace_back(targetBounds);
+			}
+			return;
+		}
+		else
+		{
+			std::vector<NodeIndex> quads = GetQuads(bounds);
+
+			for (const NodeIndex& index : quads)
+			{
+				if (index == NodeIndex::TopLeft)
+				{
+					topLeft->GetPlayerBound(targetBounds, outBounds);
+				}
+				else if (index == NodeIndex::TopRight)
+				{
+					topRight->GetPlayerBound(targetBounds, outBounds);
+				}
+				else if (index == NodeIndex::BottomLeft)
+				{
+					bottomLeft->GetPlayerBound(targetBounds, outBounds);
+				}
+				else if (index == NodeIndex::BottomRight)
+				{
+					bottomRight->GetPlayerBound(targetBounds, outBounds);
+				}
+			}
+		}
+	}
+
+
+
 	bool Node::SubDivide()
 	{
 		// Todo: 나중에 동적으로 만들어야할거같음. 일단 하드코딩.
-		if (depth == 3)
+		if (depth == 2)
 		{
 			return false;
 		}
@@ -248,15 +290,15 @@ namespace Wanted
 
 			for (int i = startX; i < startX + width; i++)
 			{
-				Renderer::Get().Submit("-", Vector2(i, midY), Color::Green , 15);
+				Renderer::Get().Submit("-", Vector2(i, midY), Color::Green , 9);
 			}
 			
 			for (int i = startY; i < startY + height; i++)
 			{
-				Renderer::Get().Submit("|", Vector2(midX, i), Color::Green, 15);
+				Renderer::Get().Submit("|", Vector2(midX, i), Color::Green, 9);
 			}
 
-			Renderer::Get().Submit("+", Vector2(midX, midY), Color::Green, 15);
+			Renderer::Get().Submit("+", Vector2(midX, midY), Color::Green, 9);
 
 			topLeft->Draw();
 			topRight->Draw();

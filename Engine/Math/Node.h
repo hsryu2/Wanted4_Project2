@@ -31,6 +31,9 @@ namespace Wanted
 
 		void Clear();
 
+		void GetPlayerBound(const Bounds& targetBounds, std::vector<Bounds>& outBounds);
+		
+
 		inline const Bounds& GetBounds() { return bounds; }
 		inline const std::vector<Actor*>& Points() { return points; }
 
@@ -50,8 +53,8 @@ namespace Wanted
 
 		Bounds bounds;
 		int depth = 0;
-		// 분할면 안에 객체가 4개 있으면 분할.
-		const int capacity = 4; 
+		// 분할면 안에 객체가 5개 있으면 분할.
+		const int capacity = 3; 
 		NodeIndex testRegion(const Bounds& bounds);
 
 		std::vector<NodeIndex> GetQuads(const Bounds& bounds);

@@ -53,4 +53,26 @@ namespace Wanted
 			root->Draw();
 		}
 	}
+	std::vector<Bounds> QuadTree::GetPlayerBounds(const Bounds& bounds)
+	{
+		std::vector<Bounds> outBounds;
+
+		if (root)
+		{
+			root->GetPlayerBound(bounds, outBounds);
+		}
+
+		return outBounds;
+	}
+}
+
+std::vector<Actor*> QuadTree::GetPlayerBullet(const Bounds& target)
+{
+	std::vector<Actor*> bullets;
+	if (root)
+	{
+		root->Query(target, bullets);
+	}
+
+	return bullets;
 }

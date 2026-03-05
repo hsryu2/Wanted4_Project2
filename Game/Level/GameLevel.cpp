@@ -119,7 +119,7 @@ void GameLevel::ProcessCollisionPlayerAndBullet(QuadTree& quadTree)
 
 		if (actor->IsTypeOf<Bullet>() || actor->IsTypeOf<HomingBullet>()|| actor->IsTypeOf<SpecialBullet>())
 		{
-			actor->SetColor(Color::Red);
+			actor->SetColor(Color::White);
 			//bullets.emplace_back(actor);
 			quadTree.Insert(actor);
 		}
@@ -139,6 +139,15 @@ void GameLevel::ProcessCollisionPlayerAndBullet(QuadTree& quadTree)
 		player->GetBounds().Height() + expand * 2
 	);
 
+	//std::vector<Bounds> playerBox = quadTree.GetPlayerBounds(player->GetBounds());
+
+	std::vector<Actor*> roomMates = quadTree.GetPlayerBullet(player->GetBounds());
+
+	for (Actor* bullet : roomMates)
+	{
+		bullet->SetColor(Color::Red);
+	}
+
 	// 충돌 판정.
 	if (player)
 	{
@@ -146,18 +155,17 @@ void GameLevel::ProcessCollisionPlayerAndBullet(QuadTree& quadTree)
 
 		for (Actor* bullet : nearBullet)
 		{
-			bullet->SetColor(Color::White);
-
+			//bullet->SetColor(Color::Red);
 			if (player->GetBounds().Intersects(bullet->GetBounds()) && isPlayerResistance == false)
 			{
 
-				if (Player::Get().ItemCount_Clear > 0)
-				{
-					BulletSpawner::Get().ClearBullet();
-					Player::Get().ItemCount_Clear--;
-
-					return;
-				}
+				//if (Player::Get().ItemCount_Clear > 0)
+				//{
+				//	BulletSpawner::Get().ClearBullet();
+				//	Player::Get().ItemCount_Clear--;
+				//
+				//	return;
+				//}
 				// 플레이어 죽음 설정.
 				//isPlayerDead = true;
 
