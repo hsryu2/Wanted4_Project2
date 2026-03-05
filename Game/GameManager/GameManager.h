@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Engine/Engine.h"
 #include "Level/GameLevel.h"
 #include "Level/StartLevel.h"
@@ -36,6 +36,8 @@ public:
 	void ShowScore();
 	void ShowEndScore();
 	void ShowStoreItem();
+
+	
 
 
 	static GameManager& Get();

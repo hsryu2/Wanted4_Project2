@@ -22,22 +22,22 @@ namespace Wanted
 		root->Insert(node);
 	}
 
-	std::vector<Actor*> QuadTree::Query(Actor* targetActor)
+	std::vector<Actor*> QuadTree::Query(Bounds& range)
 	{
-		if (!targetActor)
+		std::vector<Actor*> possibleActors;
+		if (!root)
 		{
-			return { };
+			return possibleActors;
 		}
 
-		std::vector<Actor*> possibleActors;
-		root->Query(targetActor->GetBounds(), possibleActors);
+		
+		root->Query(range, possibleActors);
 
 		std::vector<Actor*> intersects;
+
 		for (Actor* actor : possibleActors)
 		{
-			if (actor == targetActor) continue;
-
-			if (actor->GetBounds().Intersects(targetActor->GetBounds()))
+			if (range.Intersects(actor->GetBounds()))
 			{
 				intersects.emplace_back(actor);
 			}

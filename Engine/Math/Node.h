@@ -18,7 +18,7 @@ namespace Wanted
 		OutOfArea
 	};
 
-	class Node
+	class WANTED_API Node
 	{
 
 	public:

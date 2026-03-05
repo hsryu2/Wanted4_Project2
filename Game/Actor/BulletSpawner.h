@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Actor/Actor.h"
 #include "Util/Util.h"
 #include "Util/Timer.h"
@@ -20,6 +20,8 @@ public:
 	void find(Actor* bullet);
 
 	void ClearPointerListOnly();
+
+	inline std::vector<Actor*> GetActiveBullets() { return activeBullets; }
 
 private:
 	virtual void Tick(float deltaTime) override;

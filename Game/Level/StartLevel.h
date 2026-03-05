@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Level/Level.h"
 #include "GameManager/GameManager.h"
 #include "Math/Color.h"

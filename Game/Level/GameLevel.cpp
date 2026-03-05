@@ -1,4 +1,4 @@
-#include "GameLevel.h"
+﻿#include "GameLevel.h"
 #include "Actor/Player.h"
 #include "Actor/Bullet.h"
 #include "Render/Renderer.h"
@@ -61,8 +61,13 @@ void GameLevel::Tick(float deltaTime)
 	// 1초당 점수 추가.
 	GameManager::Get().Score(deltaTime);
 
+	// 쿼드트리 추가.
+	QuadTree quadTree(Bounds(0, 0, 119, 30));
+	InsertTree(quadTree);
+
+
 	// 충돌 판정 처리.
-	ProcessCollisionPlayerAndBullet();
+	ProcessCollisionPlayerAndBullet(quadTree);
 	ProcessCollisionPlayerAndItem(deltaTime);
 
 	// 무적 아이템 타이머
@@ -97,11 +102,11 @@ void GameLevel::Draw()
 }
 
 
-void GameLevel::ProcessCollisionPlayerAndBullet()
+void GameLevel::ProcessCollisionPlayerAndBullet(QuadTree& quadTree)
 {
 	// 액터 필터링을 위한 변수.
 	Player* player = nullptr;
-	std::vector<Actor*> bullets;
+	//std::vector<Actor*> bullets;
 
 	// 액터 필터링.
 	for (Actor* const actor : actors)
@@ -114,43 +119,82 @@ void GameLevel::ProcessCollisionPlayerAndBullet()
 
 		if (actor->IsTypeOf<Bullet>() || actor->IsTypeOf<HomingBullet>()|| actor->IsTypeOf<SpecialBullet>())
 		{
-			bullets.emplace_back(actor);
+			//actor->SetColor(Color::Red);
+			//bullets.emplace_back(actor);
+			quadTree.Insert(actor);
 		}
 	}
 
 	// 판정 처리 안해도 되는지 확인.
-	if (bullets.size() == 0 || !player)
-	{
-		return;
-	}
+	//if (bullets.size() == 0 || !player)
+	//{
+	//	return;
+	//}
+	
+	int expand = 1;
+	Bounds box(
+		player->GetBounds().X() - expand,
+		player->GetBounds().Y() - expand,
+		player->GetBounds().Width() + expand * 2,
+		player->GetBounds().Height() + expand * 2
+	);
 
 	// 충돌 판정.
-	for (Actor* const bullet : bullets)
+	if (player)
 	{
-		if (bullet->TestIntersect(player) && isPlayerResistance == false)
+		std::vector<Actor*> nearBullet = quadTree.Query(box);
+
+		for (Actor* bullet : nearBullet)
 		{
-			// 플레이어가 탄막 지우기 아이템이 있으면 
-			// 플레이어가 사망하지않고, 아이템 사용으로 대체
+			bullet->SetColor(Color::White);
 
-			if (Player::Get().ItemCount_Clear > 0)
+			if (player->GetBounds().Intersects(bullet->GetBounds()) && isPlayerResistance == false)
 			{
-				BulletSpawner::Get().ClearBullet();
-				Player::Get().ItemCount_Clear--;
 
-				return;
+				if (Player::Get().ItemCount_Clear > 0)
+				{
+					BulletSpawner::Get().ClearBullet();
+					Player::Get().ItemCount_Clear--;
+
+					return;
+				}
+				// 플레이어 죽음 설정.
+				//isPlayerDead = true;
+
+				// 죽은 위치 저장.
+				//playerDeadPosition = player->GetPosition();
+				//player->Destroy();
+				//bullet->Destroy();
+				//break;
 			}
-			// 플레이어 죽음 설정.
-			isPlayerDead = true;
-
-			// 죽은 위치 저장.
-			playerDeadPosition = player->GetPosition();
-
-			// 액터 제거 처리.
-			player->Destroy();
-			bullet->Destroy();
-			break;
 		}
 	}
+	//for (Actor* const bullet : bullets)
+	//{
+	//	if (bullet->TestIntersect(player) && isPlayerResistance == false)
+	//	{
+	//		// 플레이어가 탄막 지우기 아이템이 있으면 
+	//		// 플레이어가 사망하지않고, 아이템 사용으로 대체
+	//
+	//		if (Player::Get().ItemCount_Clear > 0)
+	//		{
+	//			BulletSpawner::Get().ClearBullet();
+	//			Player::Get().ItemCount_Clear--;
+	//
+	//			return;
+	//		}
+	//		// 플레이어 죽음 설정.
+	//		isPlayerDead = true;
+	//
+	//		// 죽은 위치 저장.
+	//		playerDeadPosition = player->GetPosition();
+	//
+	//		// 액터 제거 처리.
+	//		player->Destroy();
+	//		bullet->Destroy();
+	//		break;
+	//	}
+	//}
 }
 
 void GameLevel::ProcessCollisionPlayerAndItem(float deltaTime)
@@ -212,6 +256,18 @@ void GameLevel::ProcessCollisionPlayerAndItem(float deltaTime)
 			item->Destroy();
 		
 			break;
+		}
+	}
+}
+
+void GameLevel::InsertTree(QuadTree& quadtree)
+{
+	std::vector<Actor*> activebullet = BulletSpawner::Get().GetActiveBullets();
+	for (Actor* bullet : activebullet)
+	{
+		if (bullet->IsActive())
+		{
+			quadtree.Insert(bullet);
 		}
 	}
 }

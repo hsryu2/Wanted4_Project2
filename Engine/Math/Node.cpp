@@ -49,7 +49,7 @@ namespace Wanted
 		points.emplace_back(actor);
 		
 		// 배열의 사이즈가 분할 조건에 맞는지 확인.
-		if (points.size() > capacity && !IsDivided() && depth < 5)
+		if (points.size() > capacity && !IsDivided() && depth < 4)
 		{	
 			if (SubDivide())
 			{
@@ -143,7 +143,7 @@ namespace Wanted
 	bool Node::SubDivide()
 	{
 		// Todo: 나중에 동적으로 만들어야할거같음. 일단 하드코딩.
-		if (depth == 5)
+		if (depth == 3)
 		{
 			return false;
 		}

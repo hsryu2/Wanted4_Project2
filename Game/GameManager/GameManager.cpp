@@ -1,4 +1,4 @@
-#include "GameManager.h"
+﻿#include "GameManager.h"
 #include "Actor/BulletSpawner.h"
 #include "Actor/Player.h"
 
@@ -153,6 +153,7 @@ void GameManager::ShowStoreItem()
 			Engine::Get().GetHeight() - 1)
 	);
 }
+
 
 void GameManager::Score(float deltaTime)
 {

@@ -1,11 +1,13 @@
 ﻿#pragma once
-
+#include "Common/Common.h"
 
 namespace Wanted
 {
-	class Bounds
+	class WANTED_API Bounds
 	{
 	public:
+
+
 		Bounds(int x, int y, int width = 1, int height = 1)
 			: x(x), y(y), width(width), height(height)
 		{
@@ -24,8 +26,8 @@ namespace Wanted
 	private:
 		int x;
 		int y;
-		int width = 1;
-		int height = 1;
+		int width = 0;
+		int height = 0;
 	};
 
 }

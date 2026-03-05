@@ -53,9 +53,9 @@ namespace Wanted
 
 		void Setimage(const char* image);
 
-		inline Bounds GetBounds() { return Bounds(position.x, position.y, width, 1); }
+		inline Bounds GetBounds() { return Bounds(position.x, position.y, width, height); }
 	
-
+		inline void SetColor(Color newColor) { color = newColor; }
 		// Getter.
 		inline bool HasBeganPlay() const
 		{
@@ -91,6 +91,8 @@ namespace Wanted
 
 		// 문자열 길이.
 		int width = 0;
+
+		int height = 0;
 		
 		// 색상.
 		Color color = Color::White;

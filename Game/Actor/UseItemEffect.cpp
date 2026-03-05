@@ -1,4 +1,4 @@
-#include "UseItemEffect.h"
+﻿#include "UseItemEffect.h"
 
 UseItemEffect::UseItemEffect(Vector2 position, float DirX, float DirY, float spd, Color color)
 	: Actor("*", position, color),  speed(spd)

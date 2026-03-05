@@ -1,18 +1,21 @@
-#pragma once
+﻿#pragma once
 
 #include "Level/Level.h"
 #include "Math/Vector2.h"
 #include "Util/Timer.h"
 #include "GameManager/GameManager.h"
+#include "Math/QuadTree.h"
 
 using namespace Wanted;
 
 class GameLevel : public Level
 {
+
 	// RTTI 등록.
 	RTTI_DECLARATIONS(GameLevel, Level)
 
 public:
+
 	GameLevel();
 	~GameLevel();
 	
@@ -25,10 +28,10 @@ private:
 	void TickResistance(float deltaTime);
 
 	// 충돌 판정 처리 함수.
-	void ProcessCollisionPlayerAndBullet();
+	void ProcessCollisionPlayerAndBullet(QuadTree& tree);
 	void ProcessCollisionPlayerAndItem(float deltaTime);
 
-
+	void InsertTree(QuadTree& quadtree);
 private:
 
 	// 플레이어가 죽었는지 확인.
