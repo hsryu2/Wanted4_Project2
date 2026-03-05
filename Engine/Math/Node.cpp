@@ -1,4 +1,4 @@
-#include "Node.h"
+﻿#include "Node.h"
 
 namespace Wanted
 {
@@ -21,33 +21,73 @@ namespace Wanted
 		// 겹치는 영역 확인.
 		NodeIndex result = testRegion(actor->GetBounds());
 
-		if (result == NodeIndex::Stradding)
+		if (result == NodeIndex::OutOfArea)
 		{
-			points.emplace_back(actor);
+			return;
 		}
 
-		else if (result != NodeIndex::OutOfArea)
+		if (IsDivided())
 		{
-			if (SubDivide())
+			if (result == NodeIndex::TopLeft)
 			{
-				if (result == NodeIndex::TopLeft)
-				{
-					topLeft->Insert(actor);
-				}
-				if (result == NodeIndex::TopRight)
-				{
-					topRight->Insert(actor);
-				}
-				if (result == NodeIndex::BottomLeft)
-				{
-					bottomLeft->Insert(actor);
-				}
-				if (result == NodeIndex::BottomRight)
-				{
-					bottomRight->Insert(actor);
-				}
+				topLeft->Insert(actor);
+			}
+			if (result == NodeIndex::TopRight)
+			{
+				topRight->Insert(actor);
+			}
+			if (result == NodeIndex::BottomLeft)
+			{
+				bottomLeft->Insert(actor);
+			}
+			if (result == NodeIndex::BottomRight)
+			{
+				bottomRight->Insert(actor);
 			}
 		}
+		// 영역 밖이 아닌 객체를 일단 배열에 넣는다.
+		points.emplace_back(actor);
+		
+		// 배열의 사이즈가 분할 조건에 맞는지 확인.
+		if (points.size() > capacity && !IsDivided() && depth < 5)
+		{	
+			if (SubDivide())
+			{
+				// 경계선에 걸쳐 분리되지 못하는 객체들을 모을 배열.
+				std::vector<Actor*> straddingActors;
+
+				// 분할 조건 OK 분할 시킬 객체들을 옮겨주기.
+				for (Actor* p : points)
+				{
+					NodeIndex pResult = testRegion(p->GetBounds());
+
+					if (pResult == NodeIndex::TopLeft)
+					{
+						topLeft->Insert(p);
+					}
+					else if (pResult == NodeIndex::TopRight)
+					{
+						topRight->Insert(actor);
+					}
+					else if (pResult == NodeIndex::BottomLeft)
+					{
+						bottomLeft->Insert(actor);
+					}
+					else if (pResult == NodeIndex::BottomRight)
+					{
+						bottomRight->Insert(actor);
+					}
+					else
+					{
+						// 경계선에 걸친 애들을 배열에 삽입.
+						straddingActors.emplace_back(p);
+					}
+				}
+				// 경계선에 걸친 애들로 교체.
+				points = straddingActors;
+			}
+		}
+
 	}
 
 	void Node::Query(const Bounds& bounds, std::vector<Actor*>& possibleActors)

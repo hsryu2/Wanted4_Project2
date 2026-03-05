@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Common/RTTI.h"
 #include "Math/Vector2.h"
