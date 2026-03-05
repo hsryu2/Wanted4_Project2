@@ -45,4 +45,12 @@ namespace Wanted
 		return intersects;
 
 	}
+
+	void QuadTree::Draw()
+	{
+		if (root)
+		{
+			root->Draw();
+		}
+	}
 }

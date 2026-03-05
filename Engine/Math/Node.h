@@ -39,10 +39,14 @@ namespace Wanted
 		inline Node* BottomLeft() const { return bottomLeft; }
 		inline Node* BottomRight() const { return bottomRight; }
 
+		void Draw();
+
 	private:
 		bool SubDivide();
 
 		bool IsDivided();
+
+
 
 		Bounds bounds;
 		int depth = 0;

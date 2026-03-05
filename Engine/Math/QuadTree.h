@@ -14,6 +14,8 @@ namespace Wanted
 
 		std::vector<Actor*> Query(Bounds& range);
 
+		void Draw();
+
 
 	public:
 		// Todo: depth 동적으로 나중에 바꿔야함.

@@ -119,7 +119,7 @@ void GameLevel::ProcessCollisionPlayerAndBullet(QuadTree& quadTree)
 
 		if (actor->IsTypeOf<Bullet>() || actor->IsTypeOf<HomingBullet>()|| actor->IsTypeOf<SpecialBullet>())
 		{
-			//actor->SetColor(Color::Red);
+			actor->SetColor(Color::Red);
 			//bullets.emplace_back(actor);
 			quadTree.Insert(actor);
 		}
@@ -130,12 +130,12 @@ void GameLevel::ProcessCollisionPlayerAndBullet(QuadTree& quadTree)
 	//{
 	//	return;
 	//}
-	
-	int expand = 1;
+	quadTree.Draw();
+	int expand = 3;
 	Bounds box(
 		player->GetBounds().X() - expand,
 		player->GetBounds().Y() - expand,
-		player->GetBounds().Width() + expand * 2,
+		player->GetBounds().Width() + expand * 3,
 		player->GetBounds().Height() + expand * 2
 	);
 

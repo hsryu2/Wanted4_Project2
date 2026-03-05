@@ -1,5 +1,5 @@
 ﻿#include "Node.h"
-
+#include "Render/Renderer.h"
 namespace Wanted
 {
 	Node::Node(const Bounds& bounds, int depth)
@@ -227,6 +227,37 @@ namespace Wanted
 
 
 		return quads;
+	}
+	
+	void Node::Draw()
+	{
+		if (IsDivided())
+		{
+			int startX = bounds.X();
+			int startY = bounds.Y();
+			int width = bounds.Width();
+			int height = bounds.Height();
+
+			int midX = startX + width / 2;
+			int midY = startY + height / 2;
+
+			for (int i = startX; i < startX + width; i++)
+			{
+				Renderer::Get().Submit("-", Vector2(i, midY), Color::Green , 15);
+			}
+			
+			for (int i = startY; i < startY + height; i++)
+			{
+				Renderer::Get().Submit("|", Vector2(midX, i), Color::Green, 15);
+			}
+
+			Renderer::Get().Submit("+", Vector2(midX, midY), Color::Green, 15);
+
+			topLeft->Draw();
+			topRight->Draw();
+			bottomLeft->Draw();
+			bottomRight->Draw();
+		}
 	}
 
 	void Node::ClearChildren()
