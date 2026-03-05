@@ -53,8 +53,8 @@ namespace Wanted
 
 		Bounds bounds;
 		int depth = 0;
-		// 분할면 안에 객체가 5개 있으면 분할.
-		const int capacity = 3; 
+		// 분할면 안에 객체가 9개 있으면 분할.
+		const int capacity = 9; 
 		NodeIndex testRegion(const Bounds& bounds);
 
 		std::vector<NodeIndex> GetQuads(const Bounds& bounds);

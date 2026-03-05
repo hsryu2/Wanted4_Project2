@@ -15,7 +15,7 @@ namespace Wanted
 		std::vector<Actor*> Query(Bounds& range);
 
 		void Draw();
-		std::vector<Bounds> GetPlayerBounds(const Bounds& bounds);
+		//std::vector<Bounds> GetPlayerBounds(const Bounds& bounds);
 
 		std::vector<Actor*> GetPlayerBullet(const Bounds& target);
 	public:

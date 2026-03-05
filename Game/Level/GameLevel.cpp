@@ -18,7 +18,7 @@ GameLevel::GameLevel()
 
 	AddNewActor(new BulletSpawner());
 	
-	AddNewActor(new ItemSpawner());
+	//AddNewActor(new ItemSpawner());
 
 }
 
