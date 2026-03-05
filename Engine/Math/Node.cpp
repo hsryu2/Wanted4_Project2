@@ -1,4 +1,4 @@
-#include "Node.h"
+﻿#include "Node.h"
 
 namespace Wanted
 {
@@ -21,33 +21,39 @@ namespace Wanted
 		// 겹치는 영역 확인.
 		NodeIndex result = testRegion(actor->GetBounds());
 
-		if (result == NodeIndex::Stradding)
+		if (result == NodeIndex::OutOfArea)
 		{
-			points.emplace_back(actor);
+			return;
 		}
 
-		else if (result != NodeIndex::OutOfArea)
+		if (IsDivided())
 		{
-			if (SubDivide())
+			if (result == NodeIndex::TopLeft)
 			{
-				if (result == NodeIndex::TopLeft)
-				{
-					topLeft->Insert(actor);
-				}
-				if (result == NodeIndex::TopRight)
-				{
-					topRight->Insert(actor);
-				}
-				if (result == NodeIndex::BottomLeft)
-				{
-					bottomLeft->Insert(actor);
-				}
-				if (result == NodeIndex::BottomRight)
-				{
-					bottomRight->Insert(actor);
-				}
+				topLeft->Insert(actor);
+			}
+			if (result == NodeIndex::TopRight)
+			{
+				topRight->Insert(actor);
+			}
+			if (result == NodeIndex::BottomLeft)
+			{
+				bottomLeft->Insert(actor);
+			}
+			if (result == NodeIndex::BottomRight)
+			{
+				bottomRight->Insert(actor);
 			}
 		}
+		// 영역 밖이 아닌 객체를 일단 배열에 넣는다.
+		points.emplace_back(actor);
+		
+		// 배열의 사이즈가 분할 조건에 맞는지 확인.
+		if (points.size() > capacity && !IsDivided())
+		{
+
+		}
+
 	}
 
 	void Node::Query(const Bounds& bounds, std::vector<Actor*>& possibleActors)
