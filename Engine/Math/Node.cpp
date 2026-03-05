@@ -1,5 +1,8 @@
 ﻿#include "Node.h"
+
 #include "Render/Renderer.h"
+
+
 namespace Wanted
 {
 	Node::Node(const Bounds& bounds, int depth)
@@ -49,7 +52,9 @@ namespace Wanted
 		points.emplace_back(actor);
 		
 		// 배열의 사이즈가 분할 조건에 맞는지 확인.
-		if (points.size() > capacity && !IsDivided() && depth < 4)
+
+
+		if (points.size() > capacity && !IsDivided() && depth < 5)
 		{	
 			if (SubDivide())
 			{
