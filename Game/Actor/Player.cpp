@@ -10,8 +10,9 @@
 
 Player* Player::instance = nullptr;
 
+//●
 Player::Player()
-	: super("●", Vector2::Zero, Color::Green)
+	: super("P", Vector2::Zero, Color::Green)
 {
 	instance = this;
 	sortingOrder = 10;

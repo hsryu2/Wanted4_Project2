@@ -31,5 +31,6 @@ protected:
 	float fDirX = 1.0f;
 	float fDirY = 1.0f;
 
+	bool visited = false;
 };
 

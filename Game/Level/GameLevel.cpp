@@ -119,43 +119,28 @@ void GameLevel::ProcessCollisionPlayerAndBullet(QuadTree& quadTree)
 
 		if (actor->IsTypeOf<Bullet>() || actor->IsTypeOf<HomingBullet>()|| actor->IsTypeOf<SpecialBullet>())
 		{
+			// 모든 총알들 색상을 흰색으로 변경.
 			actor->SetColor(Color::White);
 			//bullets.emplace_back(actor);
 			quadTree.Insert(actor);
 		}
 	}
 
-	// 판정 처리 안해도 되는지 확인.
-	//if (bullets.size() == 0 || !player)
-	//{
-	//	return;
-	//}
+
+	// 쿼드트리 분할선 시각화
 	quadTree.Draw();
-	int expand = 3;
-	Bounds box(
-		player->GetBounds().X() - expand,
-		player->GetBounds().Y() - expand,
-		player->GetBounds().Width() + expand * 3,
-		player->GetBounds().Height() + expand * 2
-	);
 
-	//std::vector<Bounds> playerBox = quadTree.GetPlayerBounds(player->GetBounds());
-
+	// 플레이어가 포함된 영역에 총알들 가져오기.
 	std::vector<Actor*> roomMates = quadTree.GetPlayerBullet(player->GetBounds());
-
-	for (Actor* bullet : roomMates)
-	{
-		bullet->SetColor(Color::Red);
-	}
 
 	// 충돌 판정.
 	if (player)
 	{
-		std::vector<Actor*> nearBullet = quadTree.Query(box);
-
-		for (Actor* bullet : nearBullet)
+		for (Actor* bullet : roomMates)
 		{
-			//bullet->SetColor(Color::Red);
+			// 영역 안 총알들 색상 변경.
+			bullet->SetColor(Color::Red);
+
 			if (player->GetBounds().Intersects(bullet->GetBounds()) && isPlayerResistance == false)
 			{
 
@@ -166,10 +151,10 @@ void GameLevel::ProcessCollisionPlayerAndBullet(QuadTree& quadTree)
 				//
 				//	return;
 				//}
-				// 플레이어 죽음 설정.
+				//// 플레이어 죽음 설정.
 				//isPlayerDead = true;
-
-				// 죽은 위치 저장.
+				//
+				//// 죽은 위치 저장.
 				//playerDeadPosition = player->GetPosition();
 				//player->Destroy();
 				//bullet->Destroy();
@@ -177,32 +162,7 @@ void GameLevel::ProcessCollisionPlayerAndBullet(QuadTree& quadTree)
 			}
 		}
 	}
-	//for (Actor* const bullet : bullets)
-	//{
-	//	if (bullet->TestIntersect(player) && isPlayerResistance == false)
-	//	{
-	//		// 플레이어가 탄막 지우기 아이템이 있으면 
-	//		// 플레이어가 사망하지않고, 아이템 사용으로 대체
-	//
-	//		if (Player::Get().ItemCount_Clear > 0)
-	//		{
-	//			BulletSpawner::Get().ClearBullet();
-	//			Player::Get().ItemCount_Clear--;
-	//
-	//			return;
-	//		}
-	//		// 플레이어 죽음 설정.
-	//		isPlayerDead = true;
-	//
-	//		// 죽은 위치 저장.
-	//		playerDeadPosition = player->GetPosition();
-	//
-	//		// 액터 제거 처리.
-	//		player->Destroy();
-	//		bullet->Destroy();
-	//		break;
-	//	}
-	//}
+	
 }
 
 void GameLevel::ProcessCollisionPlayerAndItem(float deltaTime)

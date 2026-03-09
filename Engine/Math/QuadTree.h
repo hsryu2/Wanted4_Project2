@@ -20,7 +20,7 @@ namespace Wanted
 		std::vector<Actor*> GetPlayerBullet(const Bounds& target);
 	public:
 		// Todo: depth 동적으로 나중에 바꿔야함.
-		static const int maxDepth = 2;
+		static const int maxDepth = 3;
 	private:
 		Node* root = nullptr;
 

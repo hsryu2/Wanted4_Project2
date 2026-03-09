@@ -21,44 +21,67 @@ namespace Wanted
 		{
 			return;
 		}
-		// 겹치는 영역 확인.
+		// 영역 밖인지 확인.
 		NodeIndex result = testRegion(actor->GetBounds());
 
 		if (result == NodeIndex::OutOfArea)
 		{
 			return;
 		}
-
+		std::vector<NodeIndex> quads = GetQuads(actor->GetBounds());
+		// 이미 분할된 면인지 확인.
+		// 다중삽입?...
 		if (IsDivided())
 		{
-			if (result == NodeIndex::TopLeft)
+			for (const NodeIndex& index : quads)
 			{
-				topLeft->Insert(actor);
+				if (result == NodeIndex::TopLeft)
+				{
+					topLeft->Insert(actor);
+				}
+				else if (result == NodeIndex::TopRight)
+				{
+					topRight->Insert(actor);
+				}
+				else if (result == NodeIndex::BottomLeft)
+				{
+					bottomLeft->Insert(actor);
+				}
+				else if (result == NodeIndex::BottomRight)
+				{
+					bottomRight->Insert(actor);
+				}
 				return;
 			}
-			if (result == NodeIndex::TopRight)
-			{
-				topRight->Insert(actor);
-				return;
-			}
-			if (result == NodeIndex::BottomLeft)
-			{
-				bottomLeft->Insert(actor);
-				return;
-			}
-			if (result == NodeIndex::BottomRight)
-			{
-				bottomRight->Insert(actor);
-				return;
-			}
+			//if (result == NodeIndex::TopLeft)
+			//{
+			//	topLeft->Insert(actor);
+			//	return;
+			//}
+			//if (result == NodeIndex::TopRight)
+			//{
+			//	topRight->Insert(actor);
+			//	return;
+			//}
+			//if (result == NodeIndex::BottomLeft)
+			//{
+			//	bottomLeft->Insert(actor);
+			//	return;
+			//}
+			//if (result == NodeIndex::BottomRight)
+			//{
+			//	bottomRight->Insert(actor);
+			//	return;
+			//}
+
 		}
+
 		// 영역 밖이 아닌 객체를 일단 배열에 넣는다.
 		points.emplace_back(actor);
 		
 		// 배열의 사이즈가 분할 조건에 맞는지 확인.
 
-
-		if (points.size() > capacity && !IsDivided() && depth < 2)
+		if (points.size() > capacity && !IsDivided() && depth < 3)
 		{	
 			if (SubDivide())
 			{
@@ -149,6 +172,7 @@ namespace Wanted
 		}
 	}
 
+	// 플레이어 영역 가져오기. Quary랑 비슷함.
 	void Node::GetPlayerBound(const Bounds& targetBounds, std::vector<Bounds>& outBounds)
 	{
 		if (IsDivided())
@@ -189,8 +213,7 @@ namespace Wanted
 
 	bool Node::SubDivide()
 	{
-		// Todo: 나중에 동적으로 만들어야할거같음. 일단 하드코딩.
-		if (depth == 2)
+		if (depth == 3)
 		{
 			return false;
 		}
@@ -276,6 +299,7 @@ namespace Wanted
 		return quads;
 	}
 	
+	// 분할선 그리기.
 	void Node::Draw()
 	{
 		if (IsDivided())
@@ -288,14 +312,15 @@ namespace Wanted
 			int midX = startX + width / 2;
 			int midY = startY + height / 2;
 
-			for (int i = startX; i < startX + width; i++)
+			// x,y좌표, color, sortingOrder
+			for (int i = startX+1; i < startX + width; i++)
 			{
-				Renderer::Get().Submit("-", Vector2(i, midY), Color::Green , 9);
+				Renderer::Get().Submit("-", Vector2(i, midY), Color::Green , 8);
 			}
 			
 			for (int i = startY; i < startY + height; i++)
 			{
-				Renderer::Get().Submit("|", Vector2(midX, i), Color::Green, 9);
+				Renderer::Get().Submit("|", Vector2(midX, i), Color::Green, 8);
 			}
 
 			Renderer::Get().Submit("+", Vector2(midX, midY), Color::Green, 9);

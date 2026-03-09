@@ -66,6 +66,7 @@ namespace Wanted
 	//}
 }
 
+// 플레이어가 포함된 영역에 있는 총알들의 리스트 반환해주는 함수.
 std::vector<Actor*> QuadTree::GetPlayerBullet(const Bounds& target)
 {
 	std::vector<Actor*> bullets;
