@@ -4,7 +4,7 @@
 #include "../Actor/Actor.h"
 #include "Bounds.h"
 #include "Util/Util.h"
-
+#include "../Game/Actor/Player.h"
 
 namespace Wanted
 {
@@ -44,18 +44,21 @@ namespace Wanted
 
 		void Draw();
 
+
+
 	private:
 		bool SubDivide();
 
 		bool IsDivided();
 
 
-
 		Bounds bounds;
 		int depth = 0;
+		const int maxDepth = 3;
 
 		// 분할면 안에 객체가 6개 있으면 분할.
-		const int capacity = 6; 
+		int capacity = 6;
+
 		NodeIndex testRegion(const Bounds& bounds);
 
 		std::vector<NodeIndex> GetQuads(const Bounds& bounds);
@@ -68,6 +71,8 @@ namespace Wanted
 		Node* topRight = nullptr;
 		Node* bottomLeft = nullptr;
 		Node* bottomRight = nullptr;
+
+
 
 	};
 }

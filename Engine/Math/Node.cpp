@@ -5,6 +5,7 @@
 
 namespace Wanted
 {
+
 	Node::Node(const Bounds& bounds, int depth)
 		:bounds(bounds), depth(depth)
 	{
@@ -15,12 +16,14 @@ namespace Wanted
 		Clear();
 	}
 
+	// 삽입.
 	void Node::Insert(Actor* actor)
 	{
 		if (!actor)
 		{
 			return;
 		}
+
 		// 영역 밖인지 확인.
 		NodeIndex result = testRegion(actor->GetBounds());
 
@@ -28,9 +31,12 @@ namespace Wanted
 		{
 			return;
 		}
+
+		// 해당 액터가 어느 영역에 포함되고 있는지 확인.
 		std::vector<NodeIndex> quads = GetQuads(actor->GetBounds());
+
 		// 이미 분할된 면인지 확인.
-		// 다중삽입?...
+		// 다중 삽입으로 해당 노드가 경계선에 걸쳐있으면 양쪽 다 넣어줌.
 		if (IsDivided())
 		{
 			for (const NodeIndex& index : quads)
@@ -53,26 +59,6 @@ namespace Wanted
 				}
 				return;
 			}
-			//if (result == NodeIndex::TopLeft)
-			//{
-			//	topLeft->Insert(actor);
-			//	return;
-			//}
-			//if (result == NodeIndex::TopRight)
-			//{
-			//	topRight->Insert(actor);
-			//	return;
-			//}
-			//if (result == NodeIndex::BottomLeft)
-			//{
-			//	bottomLeft->Insert(actor);
-			//	return;
-			//}
-			//if (result == NodeIndex::BottomRight)
-			//{
-			//	bottomRight->Insert(actor);
-			//	return;
-			//}
 
 		}
 
@@ -80,8 +66,8 @@ namespace Wanted
 		points.emplace_back(actor);
 		
 		// 배열의 사이즈가 분할 조건에 맞는지 확인.
-
-		if (points.size() > capacity && !IsDivided() && depth < 3)
+		// depth의 최대치보다 작고 한 분할면에 최대 객체 수를 지정하여 넘으면 분할한다.
+		if (points.size() > capacity && !IsDivided())
 		{	
 			if (SubDivide())
 			{
@@ -213,7 +199,7 @@ namespace Wanted
 
 	bool Node::SubDivide()
 	{
-		if (depth == 3)
+		if (depth == maxDepth)
 		{
 			return false;
 		}
@@ -225,10 +211,10 @@ namespace Wanted
 			int halfWidth = bounds.Width() / 2;
 			int halfHeight = bounds.Height() / 2;
 
-			topLeft = new Node(Bounds(x, y, halfWidth, halfHeight), depth + 1);
-			topRight = new Node(Bounds(x + halfWidth, y, halfWidth, halfHeight), depth + 1);
-			bottomLeft = new Node(Bounds(x, y + halfHeight, halfWidth, halfHeight), depth + 1);
-			bottomRight = new Node(Bounds(x + halfWidth, y + halfHeight, halfWidth, halfHeight), depth + 1);
+			topLeft = new Node(Bounds(x, y, halfWidth, halfHeight + 1), depth + 1);
+			topRight = new Node(Bounds(x + halfWidth, y, halfWidth, halfHeight + 1), depth + 1);
+			bottomLeft = new Node(Bounds(x, y + halfHeight, halfWidth, halfHeight + 1), depth + 1);
+			bottomRight = new Node(Bounds(x + halfWidth, y + halfHeight, halfWidth, halfHeight + 1), depth + 1);
 
 		}
 		return true;
@@ -302,6 +288,7 @@ namespace Wanted
 	// 분할선 그리기.
 	void Node::Draw()
 	{
+		// 분할됐는지 확인하고 선을 그린다.
 		if (IsDivided())
 		{
 			int startX = bounds.X();
@@ -342,6 +329,7 @@ namespace Wanted
 			SafeDelete(bottomRight);
 		}
 	}
+
 }
 
 

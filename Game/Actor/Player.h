@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "Actor/Actor.h"
-#include "Util/Timer.h"
+#include "../Game/Util/Timer.h"
 
 using namespace Wanted;
 
@@ -41,7 +41,6 @@ private:
 	void useItem_Clear(float deltaTime);
 
 
-	
 private:
 
 	// 타이머 변수.
@@ -55,6 +54,6 @@ private:
 
 	static Player* instance;
 
-
+	
 
 };

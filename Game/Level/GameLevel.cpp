@@ -59,7 +59,7 @@ void GameLevel::Tick(float deltaTime)
 
 
 	// 1초당 점수 추가.
-	GameManager::Get().Score(deltaTime);
+	//GameManager::Get().Score(deltaTime);
 
 	// 쿼드트리 추가.
 	QuadTree quadTree(Bounds(0, 0, 119, 30));
@@ -68,10 +68,10 @@ void GameLevel::Tick(float deltaTime)
 
 	// 충돌 판정 처리.
 	ProcessCollisionPlayerAndBullet(quadTree);
-	ProcessCollisionPlayerAndItem(deltaTime);
+	//ProcessCollisionPlayerAndItem(deltaTime);
 
 	// 무적 아이템 타이머
-	TickResistance(deltaTime);
+	//TickResistance(deltaTime);
 }
 
 void GameLevel::Draw()
@@ -143,6 +143,8 @@ void GameLevel::ProcessCollisionPlayerAndBullet(QuadTree& quadTree)
 
 			if (player->GetBounds().Intersects(bullet->GetBounds()) && isPlayerResistance == false)
 			{
+
+				// 충돌했을 경우, 플레이어 사망 및 아이템 사용.
 
 				//if (Player::Get().ItemCount_Clear > 0)
 				//{

@@ -5,7 +5,7 @@
 #include "Render/Renderer.h"
 #include "Level/GameLevel.h"
 #include "Actor/BulletSpawner.h"
-
+#include "Math/Node.h"
 #include <iostream>
 
 Player* Player::instance = nullptr;
@@ -26,6 +26,8 @@ Player::Player()
 	SetPosition(Vector2(xPosition, yPosition));
 	width = 1;
 	height = 1;
+
+	
 }
 
 Player::~Player()
@@ -70,7 +72,8 @@ void Player::Tick(float deltaTime)
 	{
 		useItem_Clear(deltaTime);
 	}
-	GameManager::Get().ShowStoreItem();
+
+	//GameManager::Get().ShowStoreItem();
 }
 
 
@@ -168,7 +171,6 @@ void Player::useItem_Clear(float deltaTime)
 	ItemCount_Clear--;
 	BulletSpawner::Get().ClearBullet();
 }
-
 
 
 Player& Player::Get()

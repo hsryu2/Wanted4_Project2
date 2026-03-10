@@ -12,6 +12,7 @@ namespace Wanted
 		SafeDelete(root);
 	}
 
+	
 	void QuadTree::Insert(Actor* node)
 	{
 		if (!node)
@@ -53,17 +54,7 @@ namespace Wanted
 			root->Draw();
 		}
 	}
-	//std::vector<Bounds> QuadTree::GetPlayerBounds(const Bounds& bounds)
-	//{
-	//	std::vector<Bounds> outBounds;
-	//
-	//	if (root)
-	//	{
-	//		root->GetPlayerBound(bounds, outBounds);
-	//	}
-	//
-	//	return outBounds;
-	//}
+
 }
 
 // 플레이어가 포함된 영역에 있는 총알들의 리스트 반환해주는 함수.
